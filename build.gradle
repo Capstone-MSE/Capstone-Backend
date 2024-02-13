@@ -1,0 +1,91 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.Capstone'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// spring boot
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
+
+	// http
+	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.jetbrains:annotations:24.0.0'
+
+    // db
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// parser
+	implementation "org.apache.poi:poi:4.1.2"
+	implementation "org.apache.poi:poi-ooxml:4.1.2"
+
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	// json
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	implementation 'org.json:json:20200518'
+
+	// swagger
+	annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
+	implementation 'com.github.therapi:therapi-runtime-javadoc:0.15.0'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+
+	// amazon
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+
+	// AWS SDK
+	implementation platform('software.amazon.awssdk:bom:2.17.80')
+	implementation 'software.amazon.awssdk:s3'
+
+	//docs
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+
+
+
+	// test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
+	testImplementation "org.testcontainers:junit-jupiter:1.16.3"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// AWS 자동 구성 클래스를 제외
+configurations {
+	all {
+		exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-aws'
+	}
+}
