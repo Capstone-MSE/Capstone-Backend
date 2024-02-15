@@ -1,10 +1,9 @@
 package com.Capstone.Project.domain.user.model.dto.request;
 
-import com.Capstone.Project.domain.user.model.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -22,17 +21,6 @@ public class RequestSignupDto {
     @Schema(description = "닉네임", example = "user1")
     private final String nickname;
 
-    @NotBlank
-    @Schema(description = "나이", example = "20")
-    private final String age;
-
-    @Schema(description = "성별", example = "MALE")
-    private final Gender gender;
-
-    @NotBlank
-    @Size(min = 11, max = 11)
-    @Schema(description = "전화번호", example = "01012345678")
-    private final String phone;
 
     @NotBlank
     @Size(min = 3, max = 200)

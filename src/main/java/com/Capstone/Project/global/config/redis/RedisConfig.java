@@ -5,7 +5,6 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
-import org.redisson.config.SslProvider;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +27,11 @@ public class RedisConfig {
     @Bean
     public RedissonClient redissonClient(RedisProperties redisProperties) {
         Config config = new Config();
-        Integer timeoutMillis = Optional.ofNullable(redisProperties.getTimeout())
+        int timeout = Optional.ofNullable(redisProperties.getTimeout())
                 .map(x -> Long.valueOf(x.toMillis()).intValue())
                 .orElse(10000);
 
-        int timeout = timeoutMillis != null ? timeoutMillis : 10000;
-
-        String prefix = redisProperties.getSsl() != null ? REDISS_PROTOCOL_PREFIX : REDIS_PROTOCOL_PREFIX;
+        String prefix = redisProperties.isSsl() ? REDISS_PROTOCOL_PREFIX : REDIS_PROTOCOL_PREFIX;
 
         SingleServerConfig singleServerConfig = config.useSingleServer()
                 .setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
@@ -44,11 +41,6 @@ public class RedisConfig {
         String password = redisProperties.getPassword();
         if (password != null && !password.isBlank()) {
             singleServerConfig.setPassword(redisProperties.getPassword());
-        }
-
-        if (redisProperties.getSsl() != null) {
-            singleServerConfig.setSslEnableEndpointIdentification(false)
-                    .setSslProvider(SslProvider.JDK);
         }
 
         return Redisson.create(config);

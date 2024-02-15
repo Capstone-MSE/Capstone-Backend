@@ -1,20 +1,16 @@
 package com.Capstone.Project.domain.user.model.entity;
 
 
-import com.Capstone.Project.domain.user.model.Gender;
 import com.Capstone.Project.domain.user.model.UserStatus;
 import com.Capstone.Project.global.auth.role.UserRole;
 import com.Capstone.Project.global.base.BaseEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user")
@@ -22,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue
     @Column(name = "user_id")
@@ -37,21 +32,7 @@ public class User extends BaseEntity {
 
     @NotNull
     private String password;
-
-    @NotNull
-    private String phone;
-
-    @NotNull
-    private String age;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<ImageResult> results = new ArrayList<>();
-
+    
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
@@ -63,17 +44,11 @@ public class User extends BaseEntity {
     private User(@NotNull String name,
                  @NotNull String nickname,
                  @NotNull String password,
-                 @NotNull String phone,
-                 @NotNull String age,
-                 Gender gender,
                  UserRole userRole,
                  UserStatus status) {
         this.name = name;
         this.nickname = nickname;
         this.password = password;
-        this.phone = phone;
-        this.age = age;
-        this.gender = gender;
         this.userRole = userRole;
         this.status = status;
     }
@@ -114,23 +89,6 @@ public class User extends BaseEntity {
         this.password = encodedPassword;
     }
 
-    /**
-     * 휴대폰 번호를 변경합니다.
-     *
-     * @param phone 휴대폰번호
-     */
-    public void changePhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     * 나이를 변경합니다.
-     *
-     * @param age 나이
-     */
-    public void changeAge(String age) {
-        this.age = age;
-    }
 
     /**
      * Dummy 회원의 값으로 변경하기 위해서 null로 만듭니다.
@@ -139,7 +97,6 @@ public class User extends BaseEntity {
         this.name = "";
         this.nickname = "";
         this.password = "";
-        this.phone = "";
     }
 
     public void setId(Long id) {

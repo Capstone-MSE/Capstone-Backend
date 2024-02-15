@@ -1,12 +1,10 @@
 package com.Capstone.Project.domain.user.model.entity;
 
 
-import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -14,7 +12,6 @@ import org.springframework.data.annotation.Id;
 @Table(name = "image_result")
 public class ImageResult {
 
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue
     private Long id;

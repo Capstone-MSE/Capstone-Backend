@@ -3,12 +3,13 @@ package com.Capstone.Project.infra.s3.model;
 
 import com.Capstone.Project.domain.user.model.entity.User;
 import com.Capstone.Project.global.base.BaseEntity;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.LAZY;
+import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity

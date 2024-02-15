@@ -12,8 +12,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-    @Query("select u from User u where u.status = 'ACTIVE' and u.phone = :phone")
-    Optional<User> findByPhone(@Param("phone") String phone);
 
     @Query("select u from User u where u.status = 'ACTIVE' and u.nickname = :nickname")
     Optional<User> findByNickname(@Param("nickname") String nickname);

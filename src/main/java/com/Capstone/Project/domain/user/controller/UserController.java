@@ -12,10 +12,11 @@ import com.Capstone.Project.domain.user.service.UserService;
 import com.Capstone.Project.global.auth.jwt.AppAuthentication;
 import com.Capstone.Project.global.auth.role.UserAuth;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Tag(name = "사용자", description = "사용자 관련 api")
 @RestController

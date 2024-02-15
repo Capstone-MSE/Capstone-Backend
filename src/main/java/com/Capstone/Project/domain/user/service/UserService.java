@@ -13,10 +13,9 @@ import com.Capstone.Project.domain.user.repository.AutoLoginRepository;
 import com.Capstone.Project.domain.user.repository.UserRepository;
 import com.Capstone.Project.global.auth.jwt.AuthenticationToken;
 import com.Capstone.Project.global.auth.jwt.JwtProvider;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +34,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final AutoLoginRepository autoLoginRepository;
-    private final MessageSource messageSource;
-
 
     public ResponseLoginDto login(RequestLoginDto dto) {
         Instant now = Instant.now();
@@ -63,7 +60,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return new ResponseUserInfoDto(user.getName(), user.getNickname(),
-                user.getPhone(), user.getAge(), user.getGender(), user.getUserRole().isAdmin());
+                 user.getUserRole().isAdmin());
     }
 
 
