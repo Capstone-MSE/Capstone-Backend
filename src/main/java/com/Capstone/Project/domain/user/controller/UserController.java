@@ -6,6 +6,7 @@ import com.Capstone.Project.domain.user.model.dto.request.RequestReissueDto;
 import com.Capstone.Project.domain.user.model.dto.request.RequestSignupDto;
 import com.Capstone.Project.domain.user.model.dto.response.ResponseLoginDto;
 import com.Capstone.Project.domain.user.model.dto.response.ResponseReissueDto;
+import com.Capstone.Project.domain.user.model.dto.response.ResponseSignupTokenDto;
 import com.Capstone.Project.domain.user.model.dto.response.ResponseUserInfoDto;
 import com.Capstone.Project.domain.user.service.SignupService;
 import com.Capstone.Project.domain.user.service.UserService;
@@ -28,6 +29,16 @@ public class UserController {
     private final UserService userService;
     private final SignupService signupService;
 
+
+    /**
+     * 회원가입 토큰 생성
+     *
+     * @return 회원가입 토큰
+     */
+    @GetMapping("/signup-token")
+    public ResponseSignupTokenDto generateSignupToken() {
+        return signupService.generateSignupToken();
+    }
 
 
 

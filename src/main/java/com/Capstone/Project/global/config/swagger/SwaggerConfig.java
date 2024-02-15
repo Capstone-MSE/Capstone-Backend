@@ -23,9 +23,9 @@ import java.util.Map;
 @Configuration
 @OpenAPIDefinition(
         info = @io.swagger.v3.oas.annotations.info.Info(
-                title = "타바 프로젝트 - AI 이미지 분석 개발서버 API",
+                title = "캡스톤 - AI-OCR 개발서버 API",
                 version = SwaggerConfig.API_VERSION,
-                description = "타바 프로젝트 - AI 이미지 분석 개발서버 API 제공"
+                description = "캡스톤 - AI-OCR  개발서버 API 제공"
         ),
         servers = {
                 @Server(url = "https://ec2-43-200-171-175.ap-northeast-2.compute.amazonaws.com/api", description = "개발 서버"),
