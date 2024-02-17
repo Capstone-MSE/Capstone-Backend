@@ -1,10 +1,6 @@
 package com.Capstone.Project.global.auth;
 
 import com.Capstone.Project.global.auth.jwt.AuthenticationTokenProvider;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +9,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
@@ -36,4 +36,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         responseWrapper.copyBodyToResponse();
     }
 }
+
 
