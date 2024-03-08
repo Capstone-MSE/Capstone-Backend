@@ -28,7 +28,7 @@ import java.util.Map;
                 description = "캡스톤 - AI-OCR  개발서버 API 제공"
         ),
         servers = {
-                @Server(url = "http://43.203.213.118/api", description = "개발 서버"),
+                @Server(url = "https://mobilesystems.site/api", description = "개발 서버"),
                 @Server(url = "/", description = "로컬 서버")
         }
 )
