@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.15'
+	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -8,7 +8,7 @@ group = 'com.Capstone'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = '11'
 }
 
 repositories {
@@ -37,7 +37,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.0.0'
 
     // db
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'mysql:mysql-connector-java:8.0.28'
 
 	// parser
 	implementation "org.apache.poi:poi:4.1.2"
@@ -59,18 +59,8 @@ dependencies {
 	implementation 'com.github.therapi:therapi-runtime-javadoc:0.15.0'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 
-	// amazon
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
-
-	// AWS SDK
-	implementation platform('software.amazon.awssdk:bom:2.17.80')
-	implementation 'software.amazon.awssdk:s3'
-
 	//docs
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
-
-
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -81,15 +71,14 @@ dependencies {
 
 	//OAuth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+
+
+	// AWS S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-// AWS 자동 구성 클래스를 제외
-configurations {
-	all {
-		exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-aws'
-	}
 }
