@@ -28,7 +28,7 @@ import java.util.Map;
                 description = "캡스톤 - AI-OCR  개발서버 API 제공"
         ),
         servers = {
-                @Server(url = "https://ec2-43-200-171-175.ap-northeast-2.compute.amazonaws.com/api", description = "개발 서버"),
+                @Server(url = "https://mobilesystems.site/api", description = "개발 서버"),
                 @Server(url = "/", description = "로컬 서버")
         }
 )
