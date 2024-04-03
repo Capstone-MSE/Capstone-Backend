@@ -37,7 +37,7 @@ public class PhotoController {
 
     @GetMapping("/csv_download")
     public ResponseEntity<byte[]> download() throws IOException {
-        return s3Service.getObject("1.BINGSIN.png");
+        return s3Service.getObject("1.testExcel.xlsx");
     }
 
 
