@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class FileUploadFailedException extends LocalizedMessageException {
 
-    public FileUploadFailedException(){
+    public FileUploadFailedException() {
         super(HttpStatus.INTERNAL_SERVER_ERROR, "failed.file.upload");
     }
 }

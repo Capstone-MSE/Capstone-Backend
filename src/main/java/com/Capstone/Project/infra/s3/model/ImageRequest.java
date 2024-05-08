@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class ImageRequest {
+
     private final String originalImageName;
     private final MediaType contentType;
     private final InputStreamSupplier inStreamSupplier;
@@ -56,6 +57,7 @@ public class ImageRequest {
 
     @FunctionalInterface
     public interface InputStreamSupplier {
+
         InputStream get() throws IOException;
     }
 }

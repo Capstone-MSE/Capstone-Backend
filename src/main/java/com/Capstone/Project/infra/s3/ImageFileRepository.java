@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface ImageFileRepository extends JpaRepository<ImageFile, Long> {
+
     @Query("select i from ImageFile i where i.fileName = :imageName and i.user.id = :userId")
     Optional<ImageFile> findImageFileWithUserId(String imageName, Long userId);
 }

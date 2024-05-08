@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 
 @Getter
 public class UploadedImage {
+
     private final String fileId;
 
     private final String originalName;
