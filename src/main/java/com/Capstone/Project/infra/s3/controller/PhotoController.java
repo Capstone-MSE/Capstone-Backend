@@ -1,8 +1,6 @@
 package com.Capstone.Project.infra.s3.controller;
 
 import com.Capstone.Project.infra.s3.service.AmazonS3Service;
-import com.amazonaws.services.s3.transfer.Download;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,11 +41,27 @@ public class PhotoController {
         return ResponseEntity.ok().body(profilePhotoUrls);
     }
 
-   /* @GetMapping("/csv_download")
-    public ResponseEntity<byte[]> download() throws IOException {
-        return s3Service.getObject("1.testExcel.xlsx");
+
+    // 엑셀 다운 받기
+    @GetMapping("/{memberId}/{storedFileName}/xlsx_download")
+    public String xlsx_download(
+        @PathVariable String  storedFileName,
+        @PathVariable Long memberId
+    ) throws IOException {
+
+        return s3Service.getPresignedUrl(memberId, storedFileName);
     }
-*/
+
+    // 사진 바이너리 파일로 전송
+    @GetMapping("/{memberId}/{storedFileName}/photo_download")
+    public ResponseEntity<byte[]> photoDownload(
+        @PathVariable String  storedFileName,
+        @PathVariable Long memberId
+    ) throws IOException {
+
+        return s3Service.getObject(memberId, storedFileName);
+    }
+
 /*
     @GetMapping("/list")
     public ResponseEntity<List<String>> list() {}
