@@ -11,5 +11,6 @@ public class ResponseUploadFileDto {
 
     public ResponseUploadFileDto(List<String> imageList) {
         this.imageList = imageList;
+        System.out.println(imageList);
     }
 }

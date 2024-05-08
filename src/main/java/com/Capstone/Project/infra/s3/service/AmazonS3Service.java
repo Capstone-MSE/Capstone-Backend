@@ -1,10 +1,8 @@
 package com.Capstone.Project.infra.s3.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 @Service
 public class AmazonS3Service {
@@ -31,19 +30,38 @@ public class AmazonS3Service {
 
     public String uploadPhoto(Long memberId, MultipartFile multipartFile) {
         final String originalFilename = multipartFile.getOriginalFilename();
-        final String s3Filename = memberId + "." + originalFilename;
+
+        //멤버별 디렉토리 생성
+        final String directory = memberId.toString() + "/";
+        final String s3Filename = directory + originalFilename;
         final ObjectMetadata metadata = getObjectMetadata(multipartFile);
 
+       /* try {
+            amazonS3Client.putObject(bucket, s3Filename, multipartFile.getInputStream(), metadata);
+            return amazonS3Client.getUrl(bucket, s3Filename).toString();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("S3 picture upload failed");
+        }*/
         try {
+            // member 디렉토리가 없을 경우 만들기
+            if (!amazonS3Client.doesObjectExist(bucket, directory)) {
+                amazonS3Client.putObject(bucket, directory, "");
+            }
             amazonS3Client.putObject(bucket, s3Filename, multipartFile.getInputStream(), metadata);
             return amazonS3Client.getUrl(bucket, s3Filename).toString();
         } catch (Exception e) {
             throw new IllegalArgumentException("S3 picture upload failed");
         }
+
     }
 
-    public ResponseEntity<byte[]> getObject(String storedFileName) throws IOException {
-        S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, storedFileName));
+    //
+
+    public ResponseEntity<byte[]> getObject(Long memberId, String storedFileName) throws IOException {
+
+        final String directory = memberId.toString() + "/";
+        String s3FileName = directory + storedFileName;
+        S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, s3FileName));
         S3ObjectInputStream objectInputStream = o.getObjectContent();
         byte[] bytes = IOUtils.toByteArray(objectInputStream);
 
@@ -63,6 +81,7 @@ public class AmazonS3Service {
         metadata.setContentType(multipartFile.getContentType());
         return metadata;
     }
+
 
 
 }

@@ -19,4 +19,4 @@ public class UploadedImage {
         this.mimeType = image.getContentType();
         this.image = image;
     }
-}
+}  
