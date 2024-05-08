@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -39,12 +40,6 @@ public class AmazonS3Service {
         final String s3Filename = directory + originalFilename;
         final ObjectMetadata metadata = getObjectMetadata(multipartFile);
 
-       /* try {
-            amazonS3Client.putObject(bucket, s3Filename, multipartFile.getInputStream(), metadata);
-            return amazonS3Client.getUrl(bucket, s3Filename).toString();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("S3 picture upload failed");
-        }*/
         try {
             // member 디렉토리가 없을 경우 만들기
             if (!amazonS3Client.doesObjectExist(bucket, directory)) {
@@ -58,27 +53,8 @@ public class AmazonS3Service {
 
     }
 
-    //
-
-    /*public ResponseEntity<byte[]> getObject(Long memberId, String storedFileName) throws IOException {
-
-        final String directory = memberId.toString() + "/";
-        String s3FileName = directory + storedFileName;
-        S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, s3FileName));
-        S3ObjectInputStream objectInputStream = o.getObjectContent();
-        byte[] bytes = IOUtils.toByteArray(objectInputStream);
-
-        String fileName = URLEncoder.encode(storedFileName, "UTF-8").replaceAll("\\+", "%20");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        httpHeaders.setContentLength(bytes.length);
-        httpHeaders.setContentDispositionFormData("attachment", fileName);
-
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-
-    }
-*/
-    public ResponseEntity<byte[]> getObject(Long memberId, String storedFileName) throws IOException {
+    public ResponseEntity<byte[]> getObject(Long memberId, String storedFileName)
+        throws IOException {
         final String directory = memberId.toString() + "/";
         String s3FileName = directory + storedFileName;
         S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, s3FileName));
@@ -93,9 +69,11 @@ public class AmazonS3Service {
         String contentType;
         if (fileExtension.equalsIgnoreCase("png")) {
             contentType = "image/png";
-        } else if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("jpeg")) {
+        } else if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase(
+            "jpeg")) {
             contentType = "image/jpeg";
-        } else if (fileExtension.equalsIgnoreCase("xlsx") || fileExtension.equalsIgnoreCase("xls")) {
+        } else if (fileExtension.equalsIgnoreCase("xlsx") || fileExtension.equalsIgnoreCase(
+            "xls")) {
             contentType = "";
         } else {
             // 기타 파일 형식에 대한 처리
@@ -122,9 +100,11 @@ public class AmazonS3Service {
         final String s3FileName = directory + storedFileName;
 
         // Pre-signed URL 생성 요청 생성
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, s3FileName);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(
+            bucket, s3FileName);
         generatePresignedUrlRequest.setMethod(HttpMethod.GET); // GET 요청으로 설정
-        generatePresignedUrlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000)); // URL 만료 시간 설정 (현재 시간으로부터 1시간 후)
+        generatePresignedUrlRequest.setExpiration(
+            new Date(System.currentTimeMillis() + 3600000)); // URL 만료 시간 설정 (현재 시간으로부터 1시간 후)
 
         // Pre-signed URL 생성 및 문자열 형태로 반환
         URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
@@ -139,6 +119,25 @@ public class AmazonS3Service {
         return metadata;
     }
 
+    public List<String> listFolders() {
+        List<String> folders = new ArrayList<>();
+
+        // 버킷 내의 객체들을 나열하는 요청 생성
+        ListObjectsV2Request request = new ListObjectsV2Request().withBucketName(bucket)
+            .withDelimiter("/");
+
+        // 객체들을 나열하고 폴더들을 추출하여 리스트에 추가
+        ListObjectsV2Result result;
+        do {
+            result = amazonS3Client.listObjectsV2(request);
+            for (String commonPrefix : result.getCommonPrefixes()) {
+                folders.add(commonPrefix);
+            }
+            request.setContinuationToken(result.getNextContinuationToken());
+        } while (result.isTruncated());
+
+        return folders;
+    }
 
 
 }
