@@ -13,13 +13,13 @@ import com.Capstone.Project.domain.user.repository.AutoLoginRepository;
 import com.Capstone.Project.domain.user.repository.UserRepository;
 import com.Capstone.Project.global.auth.jwt.AuthenticationToken;
 import com.Capstone.Project.global.auth.jwt.JwtProvider;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
 @Service

@@ -28,8 +28,9 @@ import java.util.Map;
                 description = "캡스톤 - AI-OCR  개발서버 API 제공"
         ),
         servers = {
-                @Server(url = "https://mobilesystems.site/api", description = "개발 서버"),
-                @Server(url = "/", description = "로컬 서버")
+                //@Server(url = "/api", description = "Default Server URL")
+                @Server(url = "http://mobilesystems.site/api", description = "개발 서버"),
+               //@Server(url = "/", description = "로컬 서버")
         }
 )
 @SecurityScheme(
@@ -42,6 +43,8 @@ import java.util.Map;
 
 public class SwaggerConfig {
     public static final String API_VERSION = "v1.0.0";
+
+
 
     @Bean
     public SpringDocConfigProperties springDocConfigProperties() {
@@ -74,4 +77,6 @@ public class SwaggerConfig {
             });
         };
     }
+
+
 }
