@@ -2,17 +2,17 @@ package com.Capstone.Project.global.auth.jwt;
 
 
 import com.Capstone.Project.domain.user.model.entity.User;
+import com.Capstone.Project.global.auth.role.UserRole;
 import com.Capstone.Project.global.error.exception.ExpiredTokenException;
 import com.Capstone.Project.global.error.exception.IllegalTokenTypeException;
 import com.Capstone.Project.global.error.exception.InvalidTokenException;
-import com.Capstone.Project.global.auth.role.UserRole;
 import io.jsonwebtoken.*;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -35,7 +35,7 @@ public class JwtProvider implements AuthenticationTokenProvider {
     @Value("${app.auth.jwt.secret-key}")
     private String secretKey;
 
-
+    //AccessToken 가져오기 : 쿠키에서 AccessToken을 찾고, 없으면 헤더에서 찾음
     @Override
     public String getAccessTokenFromHeader(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -69,6 +69,7 @@ public class JwtProvider implements AuthenticationTokenProvider {
         return new JwtAuthentication(userId, userRole);
     }
 
+    //사용자 기반 Access Token과 Refresh Token 발급
     public AuthenticationToken issue(User user) {
         return JwtAuthenticationToken.builder()
                 .accessToken(createAccessToken(user.getId().toString(), user.getUserRole()))
@@ -76,8 +77,9 @@ public class JwtProvider implements AuthenticationTokenProvider {
                 .build();
     }
 
+
+    //만료된 Access Token을 기반으로 새로운 토큰 반환
     public AuthenticationToken reissue(String accessToken, String refreshToken) {
-        //만료되면 새로운 refreshToken 반환.
         String validateRefreshToken = validateRefreshToken(refreshToken);
         accessToken = refreshAccessToken(accessToken);
 
@@ -135,7 +137,7 @@ public class JwtProvider implements AuthenticationTokenProvider {
                     .setSigningKey(secretKey.getBytes())
                     .parseClaimsJws(accessToken);
         } catch (ExpiredJwtException e) {
-            throw new ExpiredTokenException();
+            throw new ExpiredTokenException(); //프론트로 401에러 전송
         } catch (JwtException e) {
             throw new InvalidTokenException();
         }
@@ -147,9 +149,9 @@ public class JwtProvider implements AuthenticationTokenProvider {
                     .setSigningKey(secretKey.getBytes())
                     .parseClaimsJws(refreshToken);
             return refreshToken;
-        } catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) { //토큰이 만료되었을 경우 401 error 전송
             return createRefreshToken();
-        } catch (JwtException e) {
+        } catch (JwtException e) { //다른 유효성 검사 오류에 대해 토큰 예외를 경우
             throw new InvalidTokenException();
         }
     }

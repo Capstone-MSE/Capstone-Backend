@@ -59,8 +59,10 @@ dependencies {
 	implementation 'com.github.therapi:therapi-runtime-javadoc:0.15.0'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 
+
 	//docs
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -68,12 +70,8 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
 	testImplementation "org.testcontainers:junit-jupiter:1.16.3"
 
-
-	//OAuth2
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
-
+	// jackson
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
 
 	// AWS S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
